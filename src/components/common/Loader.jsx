@@ -7,11 +7,15 @@ const Loader = ({ message }) => {
   const { language } = state;
 
   return (
-    <div className="flex flex-col items-center" style={{ padding: '48px 16px' }}>
-      <div className="pulse" style={{ fontSize: '48px', marginBottom: '16px' }}>
-        💰
+    <div className="loader-container">
+      <div className="loader-dots">
+        <div className="loader-dot"></div>
+        <div className="loader-dot"></div>
+        <div className="loader-dot"></div>
       </div>
-      <p className="text-secondary">{message || t('loading', language)}</p>
+      <p className="text-secondary font-medium">
+        {message || t('loading', language)}
+      </p>
     </div>
   );
 };

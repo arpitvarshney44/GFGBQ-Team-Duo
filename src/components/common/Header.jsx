@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { t } from '../../utils/translations';
+import { HiArrowLeft } from 'react-icons/hi2';
 import LanguageToggle from './LanguageToggle';
 
 const Header = ({ title, showBack, onBack, showLang = true }) => {
@@ -16,7 +17,7 @@ const Header = ({ title, showBack, onBack, showLang = true }) => {
             className="back-btn"
             aria-label={t('back', language)}
           >
-            ←
+            <HiArrowLeft />
           </button>
         )}
         <h1 className="header-title">{title || t('appName', language)}</h1>

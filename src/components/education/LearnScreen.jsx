@@ -4,11 +4,14 @@ import { t } from '../../utils/translations';
 import Header from '../common/Header';
 import LessonCard from './LessonCard';
 import LessonContent from './LessonContent';
+import { HiSparkles, HiTrophy } from 'react-icons/hi2';
 
 const lessons = [
   {
     id: 'whatIsInvesting',
     icon: '💡',
+    color: '#f59e0b',
+    bg: 'rgba(245, 158, 11, 0.1)',
     content: {
       en: {
         title: 'What is Investing?',
@@ -33,6 +36,8 @@ const lessons = [
   {
     id: 'whyInvest',
     icon: '🎯',
+    color: '#6366f1',
+    bg: 'rgba(99, 102, 241, 0.1)',
     content: {
       en: {
         title: 'Why Should You Invest?',
@@ -57,6 +62,8 @@ const lessons = [
   {
     id: 'typesOfInvestments',
     icon: '📊',
+    color: '#10b981',
+    bg: 'rgba(16, 185, 129, 0.1)',
     content: {
       en: {
         title: 'Types of Investments',
@@ -81,6 +88,8 @@ const lessons = [
   {
     id: 'howToStart',
     icon: '🚀',
+    color: '#ec4899',
+    bg: 'rgba(236, 72, 153, 0.1)',
     content: {
       en: {
         title: 'How to Start Investing?',
@@ -114,6 +123,7 @@ const LearnScreen = ({ onBack }) => {
 
   const completedCount = Object.values(learningProgress).filter(Boolean).length;
   const progressPercent = (completedCount / lessons.length) * 100;
+  const allCompleted = completedCount === lessons.length;
 
   const handleComplete = (lessonId) => {
     dispatch({ type: 'SET_LEARNING_PROGRESS', payload: lessonId });
@@ -139,28 +149,46 @@ const LearnScreen = ({ onBack }) => {
       />
       
       <div className="container page-content">
-        {/* Progress */}
-        <div className="card">
-          <div className="flex justify-between mb-8">
-            <span style={{ fontSize: '0.875rem' }}>
-              {language === 'hi' ? 'आपकी प्रगति' : 'Your Progress'}
-            </span>
-            <span style={{ fontSize: '0.875rem', fontWeight: '600' }}>
-              {completedCount}/{lessons.length} {t('completed', language)}
+        {/* Progress Card */}
+        <div className={`card ${allCompleted ? 'card-success' : ''}`} style={{ border: allCompleted ? 'none' : undefined }}>
+          <div className="flex items-center justify-between mb-12">
+            <div className="flex items-center gap-8">
+              {allCompleted ? (
+                <HiTrophy style={{ fontSize: '1.25rem' }} />
+              ) : (
+                <HiSparkles style={{ fontSize: '1.25rem', color: 'var(--primary)' }} />
+              )}
+              <span style={{ fontSize: '0.9375rem', fontWeight: '600' }}>
+                {allCompleted 
+                  ? (language === 'hi' ? 'बधाई हो! सब पूर्ण!' : 'Congrats! All done!')
+                  : (language === 'hi' ? 'आपकी प्रगति' : 'Your Progress')}
+              </span>
+            </div>
+            <span style={{ fontSize: '0.875rem', fontWeight: '700' }}>
+              {completedCount}/{lessons.length}
             </span>
           </div>
-          <div className="progress-bar">
-            <div className="progress-fill" style={{ width: `${progressPercent}%` }} />
+          <div className="progress-bar" style={{ 
+            background: allCompleted ? 'rgba(255,255,255,0.2)' : undefined 
+          }}>
+            <div 
+              className="progress-fill" 
+              style={{ 
+                width: `${progressPercent}%`,
+                background: allCompleted ? 'white' : undefined
+              }} 
+            />
           </div>
         </div>
         
         {/* Lessons */}
-        {lessons.map(lesson => (
+        {lessons.map((lesson, index) => (
           <LessonCard
             key={lesson.id}
             lesson={lesson}
             isCompleted={learningProgress[lesson.id]}
             onSelect={() => setSelectedLesson(lesson)}
+            index={index}
           />
         ))}
       </div>

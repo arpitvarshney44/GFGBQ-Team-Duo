@@ -1,22 +1,24 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { t } from '../../utils/translations';
+import { HiShieldCheck, HiScale, HiBolt } from 'react-icons/hi2';
 
 const RiskBadge = ({ level }) => {
   const { state } = useApp();
   const { language } = state;
 
   const config = {
-    low: { icon: '🛡️', class: 'risk-low' },
-    medium: { icon: '⚖️', class: 'risk-medium' },
-    high: { icon: '⚡', class: 'risk-high' }
+    low: { icon: HiShieldCheck, class: 'risk-low' },
+    medium: { icon: HiScale, class: 'risk-medium' },
+    high: { icon: HiBolt, class: 'risk-high' }
   };
 
-  const { icon, class: className } = config[level] || config.low;
+  const { icon: Icon, class: className } = config[level] || config.low;
 
   return (
     <span className={`risk-badge ${className}`}>
-      {icon} {t(level, language)}
+      <Icon style={{ fontSize: '0.875rem' }} />
+      {t(level, language)}
     </span>
   );
 };

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { t } from '../../utils/translations';
+import { HiSignal } from 'react-icons/hi2';
 
 const OfflineBanner = () => {
   const { state } = useApp();
@@ -10,7 +11,8 @@ const OfflineBanner = () => {
 
   return (
     <div className="offline-banner">
-      📡 {t('offlineMode', language)} - {t('offlineMessage', language)}
+      <HiSignal style={{ fontSize: '1.25rem' }} />
+      <span>{t('offlineMode', language)}</span>
     </div>
   );
 };
