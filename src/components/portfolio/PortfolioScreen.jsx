@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useApp } from '../../context/AppContext';
 import { t } from '../../utils/translations';
+import { savePortfolioOffline, getOfflinePortfolio, formatLastUpdated } from '../../utils/offlineStorage';
 import Header from '../common/Header';
-import { HiArrowRight, HiArrowTrendingUp, HiPlus, HiChartPie, HiCalendar } from 'react-icons/hi2';
+import { HiArrowRight, HiArrowTrendingUp, HiPlus, HiChartPie, HiCalendar, HiSignal, HiCloud } from 'react-icons/hi2';
 import { RiWallet3Fill, RiGovernmentFill, RiBankFill, RiCalendarFill, RiLineChartFill } from 'react-icons/ri';
 
 const iconMap = {
@@ -14,9 +15,28 @@ const iconMap = {
 
 const PortfolioScreen = ({ onInvest, onBack }) => {
   const { state } = useApp();
-  const { language, portfolio } = state;
+  const { language, portfolio, isOnline } = state;
+  const [offlineData, setOfflineData] = useState(null);
 
-  const totalInvested = portfolio.reduce((sum, inv) => sum + inv.amount, 0);
+  // Save portfolio when online and has data
+  useEffect(() => {
+    if (isOnline && portfolio.length > 0) {
+      savePortfolioOffline(portfolio);
+    }
+  }, [portfolio, isOnline]);
+
+  // Load offline data when offline
+  useEffect(() => {
+    if (!isOnline) {
+      setOfflineData(getOfflinePortfolio());
+    }
+  }, [isOnline]);
+
+  // Use offline data if offline and no current portfolio
+  const displayPortfolio = isOnline ? portfolio : (portfolio.length > 0 ? portfolio : (offlineData?.portfolio || []));
+  const lastUpdated = !isOnline && offlineData?.lastUpdated ? formatLastUpdated(offlineData.lastUpdated, language) : null;
+
+  const totalInvested = displayPortfolio.reduce((sum, inv) => sum + inv.amount, 0);
   const currentValue = Math.round(totalInvested * 1.02);
   const returns = currentValue - totalInvested;
   const returnsPercent = totalInvested > 0 ? ((returns / totalInvested) * 100).toFixed(2) : 0;
@@ -30,7 +50,40 @@ const PortfolioScreen = ({ onInvest, onBack }) => {
       />
       
       <div className="container page-content">
-        {portfolio.length === 0 ? (
+        {/* Offline indicator */}
+        {!isOnline && lastUpdated && (
+          <div style={{ 
+            background: '#fef3c7', 
+            padding: '0.5rem 0.75rem', 
+            borderRadius: '8px', 
+            marginBottom: '1rem',
+            fontSize: '0.75rem',
+            color: '#92400e',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem'
+          }}>
+            <HiCloud />
+            {lastUpdated}
+          </div>
+        )}
+
+        {/* Offline with no data */}
+        {!isOnline && displayPortfolio.length === 0 && !offlineData && (
+          <div className="text-center" style={{ paddingTop: '3rem' }}>
+            <HiSignal style={{ fontSize: '3rem', color: 'var(--text-light)', marginBottom: '1rem' }} />
+            <h2 style={{ fontSize: '1.25rem', fontWeight: '700', marginBottom: '0.5rem' }}>
+              {language === 'hi' ? 'आप ऑफलाइन हैं' : "You're Offline"}
+            </h2>
+            <p className="text-secondary">
+              {language === 'hi' 
+                ? 'पोर्टफोलियो देखने के लिए इंटरनेट से कनेक्ट करें' 
+                : 'Connect to internet to load portfolio'}
+            </p>
+          </div>
+        )}
+
+        {displayPortfolio.length === 0 && (isOnline || offlineData) ? (
           <div className="text-center fade-in-up" style={{ paddingTop: '3rem' }}>
             <div style={{
               width: '100px',
@@ -114,11 +167,11 @@ const PortfolioScreen = ({ onInvest, onBack }) => {
                 {language === 'hi' ? 'आपके निवेश' : 'Your Investments'}
               </h3>
               <span className="text-secondary" style={{ fontSize: '0.875rem' }}>
-                {portfolio.length} {language === 'hi' ? 'निवेश' : 'investments'}
+                {displayPortfolio.length} {language === 'hi' ? 'निवेश' : 'investments'}
               </span>
             </div>
             
-            {portfolio.map((investment, index) => {
+            {displayPortfolio.map((investment, index) => {
               const iconConfig = iconMap[investment.optionId] || iconMap['govt-bonds'];
               const Icon = iconConfig.icon;
               const invReturn = Math.round(investment.amount * 0.02);

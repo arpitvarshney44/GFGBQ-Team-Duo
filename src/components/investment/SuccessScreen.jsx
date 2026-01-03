@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { t } from '../../utils/translations';
+import { getMoneyStory } from '../../utils/moneyStory';
 import Header from '../common/Header';
 import { HiCheckCircle, HiArrowRight, HiSparkles, HiCalendar, HiHashtag, HiCurrencyRupee } from 'react-icons/hi2';
 import Confetti from './Confetti';
@@ -68,7 +69,7 @@ const SuccessScreen = ({ investment, onDone }) => {
           </div>
         </div>
         
-        <div className="card card-success mb-32" style={{ border: 'none' }}>
+        <div className="card card-success mb-16" style={{ border: 'none' }}>
           <div className="flex items-center justify-center gap-8">
             <HiSparkles style={{ fontSize: '1.25rem' }} />
             <p style={{ fontSize: '0.9375rem', fontWeight: '600' }}>
@@ -77,6 +78,13 @@ const SuccessScreen = ({ investment, onDone }) => {
                 : 'Congratulations! Your investment journey has begun!'}
             </p>
           </div>
+        </div>
+        
+        {/* Money Story */}
+        <div className="card mb-32" style={{ background: '#fef3c7', border: 'none', textAlign: 'center' }}>
+          <p style={{ fontSize: '0.9375rem', fontWeight: '600', color: '#92400e' }}>
+            {getMoneyStory(investment.amount, language)}
+          </p>
         </div>
         
         <button className="btn btn-primary" onClick={onDone}>

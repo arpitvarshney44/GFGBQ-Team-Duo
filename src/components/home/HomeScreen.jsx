@@ -3,6 +3,7 @@ import { useApp } from '../../context/AppContext';
 import { t } from '../../utils/translations';
 import Header from '../common/Header';
 import TrustBadges from '../common/TrustBadges';
+import DailyHabitCard from './DailyHabitCard';
 import { HiArrowRight, HiSparkles, HiAcademicCap, HiChartBar, HiCurrencyRupee } from 'react-icons/hi2';
 import { RiBankFill, RiGovernmentFill, RiLineChartFill, RiWallet3Fill } from 'react-icons/ri';
 
@@ -72,6 +73,9 @@ const HomeScreen = ({ onInvest, onLearn }) => {
             <HiArrowRight />
           </button>
         </div>
+        
+        {/* Daily Habit Card */}
+        <DailyHabitCard />
         
         {/* Portfolio Summary */}
         {totalInvested > 0 && (
