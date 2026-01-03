@@ -142,37 +142,31 @@ const PaymentScreen = ({ option, amount, onSuccess }) => {
         </p>
         <div className="flex gap-12 mb-16">
           {[
-            { name: 'GPay', logo: '/icons/gpay.svg' },
-            { name: 'PhonePe', logo: '/icons/phonepe.svg' },
-            { name: 'Paytm', logo: '/icons/paytm.svg' }
+            { name: 'GPay', color: '#4285F4', bg: '#E8F0FE' },
+            { name: 'PhonePe', color: '#5F259F', bg: '#F3E8FF' },
+            { name: 'Paytm', color: '#00BAF2', bg: '#E0F7FF' }
           ].map((app, index) => (
             <div 
               key={index}
               style={{
                 flex: 1,
-                padding: '0.75rem',
-                background: 'var(--bg-secondary)',
+                padding: '0.875rem 0.5rem',
+                background: app.bg,
                 borderRadius: 'var(--radius-sm)',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: '0.5rem',
+                gap: '0.25rem',
                 cursor: 'pointer',
                 transition: 'var(--transition)',
-                border: '2px solid var(--border)'
+                border: `2px solid ${app.color}20`
               }}
-              className="card-interactive"
             >
-              <img 
-                src={app.logo} 
-                alt={app.name}
-                style={{ 
-                  height: '28px', 
-                  width: 'auto',
-                  objectFit: 'contain'
-                }}
-              />
-              <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: '600' }}>
+              <span style={{ 
+                fontSize: '0.875rem', 
+                fontWeight: '700', 
+                color: app.color 
+              }}>
                 {app.name}
               </span>
             </div>
