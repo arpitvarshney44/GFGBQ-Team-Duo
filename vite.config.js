@@ -7,7 +7,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'icons/*.png'],
+      includeAssets: ['favicon.ico', 'icons/*.png', 'icons/*.jpg'],
       manifest: {
         name: 'Nivesh Sathi - निवेश साथी',
         short_name: 'Nivesh Sathi',

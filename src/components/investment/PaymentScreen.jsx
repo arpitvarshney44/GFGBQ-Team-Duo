@@ -6,6 +6,11 @@ import Loader from '../common/Loader';
 import { HiArrowRight, HiCheckCircle, HiCurrencyRupee, HiReceiptPercent } from 'react-icons/hi2';
 import { RiGovernmentFill, RiBankFill, RiCalendarFill, RiLineChartFill } from 'react-icons/ri';
 
+// Import UPI logos
+import gpayLogo from '../../assets/upi/googlepay.jpg';
+import phonepeLogo from '../../assets/upi/phonepay.jpg';
+import paytmLogo from '../../assets/upi/paytm.jpg';
+
 const iconMap = {
   'govt-bonds': { icon: RiGovernmentFill, color: '#10b981', bg: 'rgba(16, 185, 129, 0.1)' },
   'fixed-deposit': { icon: RiBankFill, color: '#6366f1', bg: 'rgba(99, 102, 241, 0.1)' },
@@ -142,30 +147,40 @@ const PaymentScreen = ({ option, amount, onSuccess }) => {
         </p>
         <div className="flex gap-12 mb-16">
           {[
-            { name: 'GPay', color: '#4285F4', bg: '#E8F0FE' },
-            { name: 'PhonePe', color: '#5F259F', bg: '#F3E8FF' },
-            { name: 'Paytm', color: '#00BAF2', bg: '#E0F7FF' }
+            { name: 'GPay', logo: gpayLogo },
+            { name: 'PhonePe', logo: phonepeLogo },
+            { name: 'Paytm', logo: paytmLogo }
           ].map((app, index) => (
             <div 
               key={index}
               style={{
                 flex: 1,
-                padding: '0.875rem 0.5rem',
-                background: app.bg,
+                padding: '0.5rem',
+                background: 'var(--bg)',
                 borderRadius: 'var(--radius-sm)',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: '0.25rem',
+                gap: '0.375rem',
                 cursor: 'pointer',
                 transition: 'var(--transition)',
-                border: `2px solid ${app.color}20`
+                border: '2px solid var(--border)'
               }}
             >
+              <img 
+                src={app.logo} 
+                alt={app.name}
+                style={{ 
+                  height: '32px', 
+                  width: 'auto',
+                  objectFit: 'contain',
+                  borderRadius: '4px'
+                }}
+              />
               <span style={{ 
-                fontSize: '0.875rem', 
-                fontWeight: '700', 
-                color: app.color 
+                fontSize: '0.7rem', 
+                fontWeight: '600', 
+                color: 'var(--text-secondary)' 
               }}>
                 {app.name}
               </span>

@@ -20,6 +20,18 @@ const Header = ({ title, showBack, onBack, showLang = true }) => {
             <HiArrowLeft />
           </button>
         )}
+        {!showBack && (
+          <img 
+            src="/icons/logo.jpg" 
+            alt="Nivesh Sathi" 
+            style={{ 
+              height: '32px', 
+              width: '32px', 
+              borderRadius: '8px',
+              objectFit: 'cover'
+            }} 
+          />
+        )}
         <h1 className="header-title">{title || t('appName', language)}</h1>
       </div>
       {showLang && <LanguageToggle />}
