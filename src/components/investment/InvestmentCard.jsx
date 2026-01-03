@@ -2,7 +2,7 @@ import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { t } from '../../utils/translations';
 import RiskBadge from '../common/RiskBadge';
-import { HiArrowRight, HiTrendingUp } from 'react-icons/hi2';
+import { HiArrowRight, HiArrowTrendingUp } from 'react-icons/hi2';
 import { RiGovernmentFill, RiBankFill, RiCalendarFill, RiLineChartFill } from 'react-icons/ri';
 
 const iconMap = {
@@ -71,7 +71,7 @@ const InvestmentCard = ({ option, onSelect, index = 0 }) => {
         borderRadius: 'var(--radius-sm)'
       }}>
         <div className="flex items-center gap-8">
-          <HiTrendingUp style={{ color: 'var(--success)' }} />
+          <HiArrowTrendingUp style={{ color: 'var(--success)' }} />
           <span style={{ fontSize: '0.875rem' }}>
             <span className="text-secondary">{language === 'hi' ? 'रिटर्न' : 'Returns'}: </span>
             <strong className="text-success">{option.expectedReturns}</strong>

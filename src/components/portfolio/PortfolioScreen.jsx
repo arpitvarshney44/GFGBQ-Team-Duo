@@ -2,7 +2,7 @@ import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { t } from '../../utils/translations';
 import Header from '../common/Header';
-import { HiArrowRight, HiTrendingUp, HiPlus, HiChartPie, HiCalendar } from 'react-icons/hi2';
+import { HiArrowRight, HiArrowTrendingUp, HiPlus, HiChartPie, HiCalendar } from 'react-icons/hi2';
 import { RiWallet3Fill, RiGovernmentFill, RiBankFill, RiCalendarFill, RiLineChartFill } from 'react-icons/ri';
 
 const iconMap = {
@@ -101,7 +101,7 @@ const PortfolioScreen = ({ onInvest, onBack }) => {
                     {t('returns', language)}
                   </p>
                   <p style={{ fontSize: '1rem', fontWeight: '700' }} className="flex items-center gap-4 justify-end">
-                    <HiTrendingUp />
+                    <HiArrowTrendingUp />
                     +₹{returns.toLocaleString('en-IN')} ({returnsPercent}%)
                   </p>
                 </div>
@@ -160,7 +160,7 @@ const PortfolioScreen = ({ onInvest, onBack }) => {
                         ₹{investment.amount.toLocaleString('en-IN')}
                       </p>
                       <p className="text-success flex items-center gap-4 justify-end" style={{ fontSize: '0.75rem', fontWeight: '600' }}>
-                        <HiTrendingUp />
+                        <HiArrowTrendingUp />
                         +₹{invReturn}
                       </p>
                     </div>

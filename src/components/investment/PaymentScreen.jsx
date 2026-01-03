@@ -5,7 +5,6 @@ import { processPayment, createInvestment } from '../../services/mockApi';
 import Loader from '../common/Loader';
 import { HiArrowRight, HiCheckCircle, HiCurrencyRupee, HiReceiptPercent } from 'react-icons/hi2';
 import { RiGovernmentFill, RiBankFill, RiCalendarFill, RiLineChartFill } from 'react-icons/ri';
-import { SiGooglepay, SiPhonepe, SiPaytm } from 'react-icons/si';
 
 const iconMap = {
   'govt-bonds': { icon: RiGovernmentFill, color: '#10b981', bg: 'rgba(16, 185, 129, 0.1)' },
@@ -143,9 +142,9 @@ const PaymentScreen = ({ option, amount, onSuccess }) => {
         </p>
         <div className="flex gap-12 mb-16">
           {[
-            { icon: SiGooglepay, color: '#4285F4', name: 'GPay' },
-            { icon: SiPhonepe, color: '#5f259f', name: 'PhonePe' },
-            { icon: SiPaytm, color: '#00BAF2', name: 'Paytm' }
+            { name: 'GPay', logo: '/icons/gpay.svg' },
+            { name: 'PhonePe', logo: '/icons/phonepe.svg' },
+            { name: 'Paytm', logo: '/icons/paytm.svg' }
           ].map((app, index) => (
             <div 
               key={index}
@@ -157,13 +156,25 @@ const PaymentScreen = ({ option, amount, onSuccess }) => {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: '0.25rem',
+                gap: '0.5rem',
                 cursor: 'pointer',
-                transition: 'var(--transition)'
+                transition: 'var(--transition)',
+                border: '2px solid var(--border)'
               }}
+              className="card-interactive"
             >
-              <app.icon style={{ fontSize: '1.5rem', color: app.color }} />
-              <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)' }}>{app.name}</span>
+              <img 
+                src={app.logo} 
+                alt={app.name}
+                style={{ 
+                  height: '28px', 
+                  width: 'auto',
+                  objectFit: 'contain'
+                }}
+              />
+              <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: '600' }}>
+                {app.name}
+              </span>
             </div>
           ))}
         </div>
