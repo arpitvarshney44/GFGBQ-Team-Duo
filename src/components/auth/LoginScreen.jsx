@@ -48,8 +48,12 @@ const LoginScreen = () => {
       setError(language === 'hi' ? 'कृपया 10 अंकों का मोबाइल नंबर दर्ज करें' : 'Please enter 10-digit mobile number');
       return;
     }
-    if (!age || parseInt(age) < 18 || parseInt(age) > 100) {
-      setError(language === 'hi' ? 'कृपया वैध आयु दर्ज करें (18+)' : 'Please enter valid age (18+)');
+    if (!age || parseInt(age) > 100) {
+      setError(language === 'hi' ? 'कृपया वैध आयु दर्ज करें' : 'Please enter valid age');
+      return;
+    }
+    if (parseInt(age) < 18) {
+      setError(language === 'hi' ? 'आप 18 वर्ष से कम हैं, निवेश के लिए पात्र नहीं हैं' : 'You are under 18, not eligible to invest');
       return;
     }
     if (password.length < 4) {
@@ -191,6 +195,10 @@ const LoginScreen = () => {
           src="/icons/logo.jpg" 
           alt="Nivesh Sathi"
           className="float"
+          onError={(e) => {
+            e.target.style.display = 'none';
+            e.target.nextSibling.style.display = 'flex';
+          }}
           style={{ 
             width: '80px', 
             height: '80px', 
@@ -200,6 +208,24 @@ const LoginScreen = () => {
             boxShadow: '0 10px 40px var(--primary-glow)'
           }}
         />
+        <div 
+          className="float"
+          style={{ 
+            width: '80px', 
+            height: '80px', 
+            borderRadius: '24px',
+            background: 'linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%)',
+            display: 'none',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 1.5rem',
+            boxShadow: '0 10px 40px var(--primary-glow)',
+            fontSize: '2.5rem',
+            color: 'white'
+          }}
+        >
+          💰
+        </div>
         <h1 style={{ fontSize: '1.75rem', fontWeight: '800', marginBottom: '0.5rem' }}>
           <span className="text-gradient">{t('appName', language)}</span>
         </h1>

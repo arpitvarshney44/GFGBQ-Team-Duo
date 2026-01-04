@@ -6,6 +6,7 @@ const initialState = {
   user: null,
   isAuthenticated: false,
   language: 'en',
+  theme: 'light', // light | dark
   isOnline: navigator.onLine,
   portfolio: [],
   learningProgress: {
@@ -25,7 +26,7 @@ const loadState = () => {
       return { 
         ...initialState, 
         ...parsed,
-        isOnline: navigator.onLine // Always check current online status
+        isOnline: navigator.onLine
       };
     }
   } catch (e) {
@@ -37,19 +38,20 @@ const loadState = () => {
 const reducer = (state, action) => {
   switch (action.type) {
     case 'SET_USER':
-      return { 
-        ...state, 
-        user: action.payload, 
-        isAuthenticated: true 
-      };
+      return { ...state, user: action.payload, isAuthenticated: true };
     case 'LOGOUT':
       return { 
         ...initialState, 
-        language: state.language, // Keep language preference
+        language: state.language,
+        theme: state.theme,
         isOnline: state.isOnline
       };
     case 'SET_LANGUAGE':
       return { ...state, language: action.payload };
+    case 'SET_THEME':
+      return { ...state, theme: action.payload };
+    case 'TOGGLE_THEME':
+      return { ...state, theme: state.theme === 'light' ? 'dark' : 'light' };
     case 'SET_ONLINE':
       return { ...state, isOnline: action.payload };
     case 'ADD_INVESTMENT':
@@ -62,10 +64,7 @@ const reducer = (state, action) => {
         learningProgress: { ...state.learningProgress, [action.payload]: true }
       };
     case 'RESET_LEARNING':
-      return {
-        ...state,
-        learningProgress: initialState.learningProgress
-      };
+      return { ...state, learningProgress: initialState.learningProgress };
     default:
       return state;
   }
@@ -74,7 +73,7 @@ const reducer = (state, action) => {
 export const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, null, loadState);
 
-  // Save state to localStorage whenever it changes
+  // Save state to localStorage
   useEffect(() => {
     try {
       localStorage.setItem('niveshSathiState', JSON.stringify(state));
@@ -82,6 +81,11 @@ export const AppProvider = ({ children }) => {
       console.warn('Failed to save state:', e);
     }
   }, [state]);
+
+  // Apply theme to document
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', state.theme);
+  }, [state.theme]);
 
   // Online/offline detection
   useEffect(() => {

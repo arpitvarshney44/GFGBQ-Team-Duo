@@ -1,0 +1,12 @@
+{
+  "name": "Nivesh Sathi - निवेश साथी",
+  "short_name": "Nivesh Sathi",
+  "description": "Start investing with just ₹10 - Micro-investment platform for first-time Indian investors",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#6366f1",
+  "orientation": "portrait",
+  "categories": ["finance", "business"],
+  "lang": "en-IN"
+}

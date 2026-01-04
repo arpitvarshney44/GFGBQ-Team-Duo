@@ -2,8 +2,9 @@ import { useApp } from '../../context/AppContext';
 import { t } from '../../utils/translations';
 import Header from '../common/Header';
 import LanguageToggle from '../common/LanguageToggle';
+import ThemeToggle from '../common/ThemeToggle';
 import TrustBadges from '../common/TrustBadges';
-import { HiUser, HiArrowRightOnRectangle, HiLanguage, HiCurrencyRupee, HiAcademicCap, HiHeart, HiCalendar } from 'react-icons/hi2';
+import { HiUser, HiArrowRightOnRectangle, HiLanguage, HiCurrencyRupee, HiAcademicCap, HiHeart, HiCalendar, HiSun } from 'react-icons/hi2';
 
 const ProfileScreen = ({ onBack }) => {
   const { state, dispatch } = useApp();
@@ -125,6 +126,29 @@ const ProfileScreen = ({ onBack }) => {
               </span>
             </div>
             <LanguageToggle />
+          </div>
+        </div>
+        
+        {/* Theme Setting */}
+        <div className="card">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-12">
+              <div style={{
+                width: '40px',
+                height: '40px',
+                borderRadius: '10px',
+                background: 'var(--bg-secondary)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <HiSun style={{ fontSize: '1.25rem', color: 'var(--text-secondary)' }} />
+              </div>
+              <span style={{ fontSize: '0.9375rem', fontWeight: '600' }}>
+                {language === 'hi' ? 'थीम' : 'Theme'}
+              </span>
+            </div>
+            <ThemeToggle />
           </div>
         </div>
         
