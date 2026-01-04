@@ -9,12 +9,15 @@ import { RiBankFill, RiGovernmentFill, RiLineChartFill, RiWallet3Fill } from 're
 
 const HomeScreen = ({ onInvest, onLearn }) => {
   const { state } = useApp();
-  const { language, portfolio, learningProgress } = state;
+  const { language, portfolio, learningProgress, user } = state;
 
   const totalInvested = portfolio.reduce((sum, inv) => sum + inv.amount, 0);
   const currentValue = Math.round(totalInvested * 1.02);
   const lessonsCompleted = Object.values(learningProgress).filter(Boolean).length;
   const hasCompletedBasics = lessonsCompleted >= 2;
+  
+  // Get first name for greeting
+  const firstName = user?.name ? user.name.split(' ')[0] : '';
 
   return (
     <div>
@@ -53,7 +56,9 @@ const HomeScreen = ({ onInvest, onLearn }) => {
           </div>
           
           <h2 style={{ fontSize: '1.5rem', fontWeight: '800', marginBottom: '0.5rem' }}>
-            {language === 'hi' ? 'नमस्ते! 🙏' : 'Hello! 🙏'}
+            {language === 'hi' 
+              ? `नमस्ते${firstName ? ` ${firstName}` : ''}! 🙏` 
+              : `Hello${firstName ? ` ${firstName}` : ''}! 🙏`}
           </h2>
           <p style={{ fontSize: '1rem', opacity: 0.9, marginBottom: '1.25rem' }}>
             {t('tagline', language)}

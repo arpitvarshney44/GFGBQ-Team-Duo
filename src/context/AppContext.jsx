@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import { createContext, useContext, useReducer, useEffect } from 'react';
 
 const AppContext = createContext();
 
@@ -21,28 +21,50 @@ const loadState = () => {
   try {
     const saved = localStorage.getItem('niveshSathiState');
     if (saved) {
-      return { ...initialState, ...JSON.parse(saved) };
+      const parsed = JSON.parse(saved);
+      return { 
+        ...initialState, 
+        ...parsed,
+        isOnline: navigator.onLine // Always check current online status
+      };
     }
-  } catch (e) {}
+  } catch (e) {
+    console.warn('Failed to load state:', e);
+  }
   return initialState;
 };
 
 const reducer = (state, action) => {
   switch (action.type) {
     case 'SET_USER':
-      return { ...state, user: action.payload, isAuthenticated: true };
+      return { 
+        ...state, 
+        user: action.payload, 
+        isAuthenticated: true 
+      };
     case 'LOGOUT':
-      return { ...state, user: null, isAuthenticated: false };
+      return { 
+        ...initialState, 
+        language: state.language, // Keep language preference
+        isOnline: state.isOnline
+      };
     case 'SET_LANGUAGE':
       return { ...state, language: action.payload };
     case 'SET_ONLINE':
       return { ...state, isOnline: action.payload };
     case 'ADD_INVESTMENT':
       return { ...state, portfolio: [...state.portfolio, action.payload] };
+    case 'SET_PORTFOLIO':
+      return { ...state, portfolio: action.payload };
     case 'SET_LEARNING_PROGRESS':
       return {
         ...state,
         learningProgress: { ...state.learningProgress, [action.payload]: true }
+      };
+    case 'RESET_LEARNING':
+      return {
+        ...state,
+        learningProgress: initialState.learningProgress
       };
     default:
       return state;
@@ -50,11 +72,15 @@ const reducer = (state, action) => {
 };
 
 export const AppProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, loadState());
+  const [state, dispatch] = useReducer(reducer, null, loadState);
 
-  // Save state to localStorage
+  // Save state to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('niveshSathiState', JSON.stringify(state));
+    try {
+      localStorage.setItem('niveshSathiState', JSON.stringify(state));
+    } catch (e) {
+      console.warn('Failed to save state:', e);
+    }
   }, [state]);
 
   // Online/offline detection

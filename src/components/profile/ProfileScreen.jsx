@@ -1,10 +1,9 @@
-import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { t } from '../../utils/translations';
 import Header from '../common/Header';
 import LanguageToggle from '../common/LanguageToggle';
 import TrustBadges from '../common/TrustBadges';
-import { HiUser, HiArrowRightOnRectangle, HiLanguage, HiCurrencyRupee, HiAcademicCap, HiHeart } from 'react-icons/hi2';
+import { HiUser, HiArrowRightOnRectangle, HiLanguage, HiCurrencyRupee, HiAcademicCap, HiHeart, HiCalendar } from 'react-icons/hi2';
 
 const ProfileScreen = ({ onBack }) => {
   const { state, dispatch } = useApp();
@@ -42,16 +41,24 @@ const ProfileScreen = ({ onBack }) => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            margin: '0 auto 1rem'
+            margin: '0 auto 1rem',
+            fontSize: '2rem',
+            fontWeight: '700'
           }}>
-            <HiUser style={{ fontSize: '2.5rem' }} />
+            {user?.name ? user.name.charAt(0).toUpperCase() : <HiUser style={{ fontSize: '2.5rem' }} />}
           </div>
           <h2 style={{ fontSize: '1.25rem', fontWeight: '700', marginBottom: '0.25rem' }}>
-            +91 {user?.mobile}
+            {user?.name || (language === 'hi' ? 'निवेशक' : 'Investor')}
           </h2>
-          <p style={{ fontSize: '0.875rem', opacity: 0.8 }}>
-            {language === 'hi' ? 'निवेशक' : 'Investor'}
+          <p style={{ fontSize: '0.875rem', opacity: 0.9, marginBottom: '0.25rem' }}>
+            +91 {user?.mobile}
           </p>
+          {user?.age && (
+            <p style={{ fontSize: '0.75rem', opacity: 0.7, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}>
+              <HiCalendar />
+              {user.age} {language === 'hi' ? 'वर्ष' : 'years'}
+            </p>
+          )}
         </div>
         
         {/* Stats */}
