@@ -6,7 +6,7 @@ const initialState = {
   user: null,
   isAuthenticated: false,
   language: 'en',
-  theme: 'light', // light | dark
+  theme: 'light',
   isOnline: navigator.onLine,
   portfolio: [],
   learningProgress: {
@@ -17,15 +17,37 @@ const initialState = {
   }
 };
 
+// Get user-specific storage key
+const getUserKey = (mobile) => `niveshSathi_user_${mobile}`;
+
 // Load state from localStorage
 const loadState = () => {
   try {
     const saved = localStorage.getItem('niveshSathiState');
     if (saved) {
       const parsed = JSON.parse(saved);
+      
+      // If user exists, load their specific data
+      if (parsed.user?.mobile && parsed.isAuthenticated) {
+        const userData = loadUserData(parsed.user.mobile);
+        return {
+          ...initialState,
+          user: parsed.user,
+          isAuthenticated: true,
+          language: parsed.language || 'en',
+          theme: parsed.theme || 'light',
+          // Load ONLY this user's data, not any stale data
+          portfolio: userData?.portfolio || [],
+          learningProgress: userData?.learningProgress || initialState.learningProgress,
+          isOnline: navigator.onLine
+        };
+      }
+      
+      // No authenticated user - return clean state with just preferences
       return { 
         ...initialState, 
-        ...parsed,
+        language: parsed.language || 'en',
+        theme: parsed.theme || 'light',
         isOnline: navigator.onLine
       };
     }
@@ -35,10 +57,54 @@ const loadState = () => {
   return initialState;
 };
 
+// Save user-specific data
+const saveUserData = (mobile, portfolio, learningProgress) => {
+  if (!mobile) return;
+  try {
+    const userDataKey = getUserKey(mobile);
+    localStorage.setItem(userDataKey, JSON.stringify({
+      portfolio,
+      learningProgress
+    }));
+  } catch (e) {
+    console.warn('Failed to save user data:', e);
+  }
+};
+
+// Load user-specific data
+const loadUserData = (mobile) => {
+  if (!mobile) return null;
+  try {
+    const userDataKey = getUserKey(mobile);
+    const data = localStorage.getItem(userDataKey);
+    return data ? JSON.parse(data) : null;
+  } catch (e) {
+    return null;
+  }
+};
+
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'SET_USER':
-      return { ...state, user: action.payload, isAuthenticated: true };
+    case 'SET_USER': {
+      const user = action.payload;
+      // Load user-specific data or start completely fresh for new users
+      const userData = loadUserData(user.mobile);
+      
+      // Always reset to clean state for this user - don't carry over any previous user's data
+      return { 
+        ...state, 
+        user, 
+        isAuthenticated: true,
+        // Use this user's data if exists, otherwise start completely fresh
+        portfolio: userData?.portfolio || [],
+        learningProgress: userData?.learningProgress || {
+          whatIsInvesting: false,
+          whyInvest: false,
+          typesOfInvestments: false,
+          howToStart: false
+        }
+      };
+    }
     case 'LOGOUT':
       return { 
         ...initialState, 
@@ -76,7 +142,18 @@ export const AppProvider = ({ children }) => {
   // Save state to localStorage
   useEffect(() => {
     try {
-      localStorage.setItem('niveshSathiState', JSON.stringify(state));
+      // Save general state (without user-specific data)
+      localStorage.setItem('niveshSathiState', JSON.stringify({
+        user: state.user,
+        isAuthenticated: state.isAuthenticated,
+        language: state.language,
+        theme: state.theme
+      }));
+      
+      // Save user-specific data separately
+      if (state.user?.mobile) {
+        saveUserData(state.user.mobile, state.portfolio, state.learningProgress);
+      }
     } catch (e) {
       console.warn('Failed to save state:', e);
     }
