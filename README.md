@@ -6,6 +6,16 @@ A lightweight micro-investment PWA designed for first-time Indian investors, esp
 
 ![Nivesh Sathi](public/icons/logo.jpg)
 
+## 📋 Project Info
+
+| | |
+|---|---|
+| **Problem Statement** | Micro Investment Site |
+| **Project Name** | Nivesh-Sathi |
+| **Team Name** | Duo |
+| **PPT Link** | [View Presentation](https://docs.google.com/presentation/d/14-eGGimklX61FKNN6vfjnyyjKReOJ-FE/edit?usp=drive_link&ouid=115446456336518715865&rtpof=true&sd=true) |
+| **Deploy Link** | [nivesh-saathi.netlify.app](https://nivesh-saathi.netlify.app) |
+
 ## 🎯 Problem Statement
 
 - 76% of Indians don't invest due to lack of knowledge and high entry barriers
